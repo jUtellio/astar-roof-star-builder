@@ -19,23 +19,27 @@ const Index = () => {
   const services = [
     {
       title: "Residential Roofing",
-      description: "Complete roof installations and replacements for Utah County homes",
-      icon: "🏠"
+      description: "Complete roof installations and replacements for Utah County homes with premium materials and expert craftsmanship",
+      icon: "🏠",
+      features: ["Asphalt Shingles", "Metal Roofing", "Tile Installation", "25-Year Warranty"]
     },
     {
       title: "Emergency Repairs",
-      description: "24/7 emergency roofing services for urgent situations",
-      icon: "🚨"
+      description: "24/7 emergency roofing services for urgent situations - we respond within 2 hours of your call",
+      icon: "🚨",
+      features: ["Storm Damage", "Leak Repairs", "24/7 Response", "Insurance Claims"]
     },
     {
       title: "Commercial Roofing",
-      description: "Professional roofing solutions for commercial properties",
-      icon: "🏢"
+      description: "Professional roofing solutions for commercial properties with minimal business disruption",
+      icon: "🏢",
+      features: ["Flat Roofs", "TPO Systems", "EPDM Installation", "Maintenance Plans"]
     },
     {
       title: "Insurance Claims",
-      description: "Expert assistance with insurance claim processing",
-      icon: "📋"
+      description: "Expert assistance with insurance claim processing - we handle the paperwork so you don't have to",
+      icon: "📋",
+      features: ["Claim Filing", "Adjuster Meetings", "Documentation", "Direct Billing"]
     }
   ];
 
@@ -76,9 +80,9 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <a href="tel:8018304557" className="flex items-center space-x-2 text-red-600 hover:text-red-700 transition-colors">
+              <a href="tel:8018304557" className="flex items-center space-x-2 text-red-600 hover:text-red-700 transition-colors bg-white border-2 border-red-600 px-4 py-2 rounded-lg hover:bg-red-50 font-semibold">
                 <Phone className="w-4 h-4" />
-                <span className="font-semibold">(801) 830-4557</span>
+                <span>(801) 830-4557</span>
               </a>
               <Button className="bg-red-600 hover:bg-red-700 text-white">
                 Get Free Estimate
@@ -147,19 +151,58 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-20">
+      {/* Enhanced Services Section */}
+      <section className="py-20 bg-gradient-to-b from-white to-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-black mb-4">Our Roofing Services</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Comprehensive roofing solutions for residential and commercial properties throughout Utah County
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-red-600 rounded-full mb-6">
+              <Shield className="w-8 h-8 text-white" />
+            </div>
+            <h2 className="text-5xl font-bold text-black mb-6">
+              Premium Roofing Services
+              <span className="block text-2xl text-red-600 font-normal mt-2">
+                Trusted by 100+ Utah County Families
+              </span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              From emergency repairs to complete roof replacements, we deliver unmatched quality 
+              and craftsmanship with every project. Your satisfaction is our guarantee.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          
+          <div className="grid md:grid-cols-2 gap-8 mb-16">
             {services.map((service, index) => (
               <ServiceCard key={index} {...service} />
             ))}
+          </div>
+
+          {/* Service Guarantee Section */}
+          <div className="bg-black text-white rounded-2xl p-8 md:p-12 text-center">
+            <div className="max-w-4xl mx-auto">
+              <h3 className="text-3xl font-bold mb-6">
+                The A-Star Guarantee
+              </h3>
+              <div className="grid md:grid-cols-3 gap-8">
+                <div className="flex flex-col items-center">
+                  <Award className="w-12 h-12 text-red-400 mb-4" />
+                  <h4 className="text-xl font-bold mb-2">Quality Materials</h4>
+                  <p className="text-gray-300">Only premium materials from trusted manufacturers</p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <Clock className="w-12 h-12 text-red-400 mb-4" />
+                  <h4 className="text-xl font-bold mb-2">On-Time Completion</h4>
+                  <p className="text-gray-300">Projects completed on schedule, every time</p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <Shield className="w-12 h-12 text-red-400 mb-4" />
+                  <h4 className="text-xl font-bold mb-2">25-Year Warranty</h4>
+                  <p className="text-gray-300">Comprehensive warranty on all workmanship</p>
+                </div>
+              </div>
+              <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-lg mt-8">
+                Get Your Free Estimate
+              </Button>
+            </div>
           </div>
         </div>
       </section>
