@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Star, Phone, Mail, MapPin, Shield, Clock, Users, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -119,9 +118,11 @@ const Index = () => {
               <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-lg">
                 Get Free Estimate Today
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-black px-8 py-4 text-lg">
-                Call (801) 830-4557
-              </Button>
+              <a href="tel:8018304557">
+                <Button size="lg" className="bg-white text-red-600 hover:bg-gray-100 border-2 border-white px-8 py-4 text-lg font-semibold">
+                  Call (801) 830-4557
+                </Button>
+              </a>
             </div>
           </div>
         </div>
