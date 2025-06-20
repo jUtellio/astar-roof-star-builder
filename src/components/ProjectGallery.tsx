@@ -76,7 +76,7 @@ const ProjectGallery = () => {
       scale: 1,
       transition: {
         duration: 0.5,
-        ease: "easeOut"
+        ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
@@ -148,7 +148,8 @@ const ProjectGallery = () => {
                 <h3 className="font-bold text-lg mb-2 text-black group-hover:text-red-600 transition-colors">
                   {project.title}
                 </h3>
-                <p className="text-gray-600">{project.location}</p>
+                <p className="text-gray-600">{project.location}
+                </p>
               </CardContent>
             </Card>
           </motion.div>

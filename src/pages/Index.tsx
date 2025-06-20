@@ -17,7 +17,7 @@ const fadeUpVariants = {
   visible: { 
     opacity: 1, 
     y: 0,
-    transition: { duration: 0.6, ease: "easeOut" }
+    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }
   }
 };
 
@@ -25,7 +25,7 @@ const fadeInVariants = {
   hidden: { opacity: 0 },
   visible: { 
     opacity: 1,
-    transition: { duration: 0.8, ease: "easeOut" }
+    transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }
   }
 };
 
@@ -34,7 +34,7 @@ const slideInLeft = {
   visible: { 
     opacity: 1, 
     x: 0,
-    transition: { duration: 0.6, ease: "easeOut" }
+    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }
   }
 };
 
@@ -43,7 +43,7 @@ const slideInRight = {
   visible: { 
     opacity: 1, 
     x: 0,
-    transition: { duration: 0.6, ease: "easeOut" }
+    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }
   }
 };
 
@@ -61,7 +61,7 @@ const scaleInVariants = {
   visible: { 
     opacity: 1, 
     scale: 1,
-    transition: { duration: 0.5, ease: "easeOut" }
+    transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }
   }
 };
 
@@ -133,7 +133,7 @@ const Index = () => {
         }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
       >
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
@@ -175,7 +175,7 @@ const Index = () => {
           className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1920&h=1080&fit=crop')] bg-cover bg-center"
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 10, ease: "easeOut" }}
+          transition={{ duration: 10, ease: [0.25, 0.1, 0.25, 1] }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-red-600/80"></div>
         <div className="container mx-auto px-4 relative z-10">
