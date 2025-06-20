@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import { motion } from 'framer-motion';
 
 const ProjectGallery = () => {
   const projects = [
@@ -54,78 +55,105 @@ const ProjectGallery = () => {
     ? projects 
     : projects.filter(project => project.category === filter);
 
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: {
+      opacity: 0,
+      y: 30,
+      scale: 0.9
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
     <div>
-      <div className="flex justify-center mb-8 space-x-4">
-        <button
-          onClick={() => setFilter('all')}
-          className={`px-4 py-2 rounded-full transition-colors ${
-            filter === 'all' 
-              ? 'bg-red-600 text-white' 
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
-        >
-          All Projects
-        </button>
-        <button
-          onClick={() => setFilter('residential')}
-          className={`px-4 py-2 rounded-full transition-colors ${
-            filter === 'residential' 
-              ? 'bg-red-600 text-white' 
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
-        >
-          Residential
-        </button>
-        <button
-          onClick={() => setFilter('commercial')}
-          className={`px-4 py-2 rounded-full transition-colors ${
-            filter === 'commercial' 
-              ? 'bg-red-600 text-white' 
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
-        >
-          Commercial
-        </button>
-        <button
-          onClick={() => setFilter('emergency')}
-          className={`px-4 py-2 rounded-full transition-colors ${
-            filter === 'emergency' 
-              ? 'bg-red-600 text-white' 
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
-        >
-          Emergency
-        </button>
-      </div>
+      <motion.div 
+        className="flex justify-center mb-8 space-x-4"
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        {[
+          { key: 'all', label: 'All Projects' },
+          { key: 'residential', label: 'Residential' },
+          { key: 'commercial', label: 'Commercial' },
+          { key: 'emergency', label: 'Emergency' }
+        ].map((filterOption) => (
+          <motion.button
+            key={filterOption.key}
+            onClick={() => setFilter(filterOption.key)}
+            className={`px-4 py-2 rounded-full transition-colors ${
+              filter === filterOption.key
+                ? 'bg-red-600 text-white' 
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            {filterOption.label}
+          </motion.button>
+        ))}
+      </motion.div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <motion.div 
+        className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+        key={filter} // Re-trigger animation when filter changes
+      >
         {filteredProjects.map((project, index) => (
-          <Card 
-            key={project.id} 
-            className="group hover:shadow-xl transition-all duration-300 overflow-hidden"
-            style={{ 
-              animationDelay: `${index * 100}ms`,
-              animation: 'fadeInUp 0.6s ease-out forwards'
+          <motion.div
+            key={project.id}
+            variants={itemVariants}
+            whileHover={{ 
+              y: -5,
+              transition: { duration: 0.2 }
             }}
           >
-            <div className="relative overflow-hidden">
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-red-600/0 group-hover:bg-red-600/20 transition-colors duration-300"></div>
-            </div>
-            <CardContent className="p-4">
-              <h3 className="font-bold text-lg mb-2 text-black group-hover:text-red-600 transition-colors">
-                {project.title}
-              </h3>
-              <p className="text-gray-600">{project.location}</p>
-            </CardContent>
-          </Card>
+            <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
+              <div className="relative overflow-hidden">
+                <motion.img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-48 object-cover"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.5 }}
+                />
+                <motion.div 
+                  className="absolute inset-0 bg-red-600/0 group-hover:bg-red-600/20 transition-colors duration-300"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                />
+              </div>
+              <CardContent className="p-4">
+                <h3 className="font-bold text-lg mb-2 text-black group-hover:text-red-600 transition-colors">
+                  {project.title}
+                </h3>
+                <p className="text-gray-600">{project.location}</p>
+              </CardContent>
+            </Card>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };

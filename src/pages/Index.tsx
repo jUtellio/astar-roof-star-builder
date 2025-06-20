@@ -1,18 +1,79 @@
+
 import { useState, useEffect } from 'react';
 import { Star, Phone, Mail, MapPin, Shield, Clock, Users, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 import ContactForm from '@/components/ContactForm';
 import ServiceCard from '@/components/ServiceCard';
 import TestimonialCard from '@/components/TestimonialCard';
 import ProjectGallery from '@/components/ProjectGallery';
 import CounterAnimation from '@/components/CounterAnimation';
 
+// Animation variants
+const fadeUpVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" }
+  }
+};
+
+const fadeInVariants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: { duration: 0.8, ease: "easeOut" }
+  }
+};
+
+const slideInLeft = {
+  hidden: { opacity: 0, x: -50 },
+  visible: { 
+    opacity: 1, 
+    x: 0,
+    transition: { duration: 0.6, ease: "easeOut" }
+  }
+};
+
+const slideInRight = {
+  hidden: { opacity: 0, x: 50 },
+  visible: { 
+    opacity: 1, 
+    x: 0,
+    transition: { duration: 0.6, ease: "easeOut" }
+  }
+};
+
+const staggerContainer = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+};
+
+const scaleInVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { 
+    opacity: 1, 
+    scale: 1,
+    transition: { duration: 0.5, ease: "easeOut" }
+  }
+};
+
 const Index = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    setIsVisible(true);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const services = [
@@ -65,11 +126,23 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
+      {/* Animated Header */}
+      <motion.header 
+        className={`sticky top-0 z-50 transition-all duration-300 ${
+          scrolled ? 'bg-white shadow-lg' : 'bg-white shadow-sm'
+        }`}
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-2">
+            <motion.div 
+              className="flex items-center space-x-2"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
                 <Star className="w-6 h-6 text-white fill-current" />
               </div>
@@ -77,8 +150,13 @@ const Index = () => {
                 <h1 className="font-bold text-xl text-black">A-Star Roofing</h1>
                 <p className="text-sm text-gray-600">& Construction</p>
               </div>
-            </div>
-            <div className="flex items-center space-x-4">
+            </motion.div>
+            <motion.div 
+              className="flex items-center space-x-4"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
               <a href="tel:8018304557" className="flex items-center space-x-2 text-red-600 hover:text-red-700 transition-colors bg-white border-2 border-red-600 px-4 py-2 rounded-lg hover:bg-red-50 font-semibold">
                 <Phone className="w-4 h-4" />
                 <span>(801) 830-4557</span>
@@ -86,79 +164,138 @@ const Index = () => {
               <Button className="bg-red-600 hover:bg-red-700 text-white">
                 Get Free Estimate
               </Button>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </header>
+      </motion.header>
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-black/80 to-red-600/80 text-white py-20">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1920&h=1080&fit=crop')] bg-cover bg-center"></div>
+      {/* Animated Hero Section */}
+      <section className="relative bg-gradient-to-r from-black/80 to-red-600/80 text-white py-20 overflow-hidden">
+        <motion.div 
+          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1920&h=1080&fit=crop')] bg-cover bg-center"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 10, ease: "easeOut" }}
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-red-600/80"></div>
         <div className="container mx-auto px-4 relative z-10">
-          <div className={`max-w-3xl transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-            <div className="flex items-center space-x-2 mb-4">
+          <div className="max-w-3xl">
+            <motion.div 
+              className="flex items-center space-x-2 mb-4"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-6 h-6 text-yellow-400 fill-current" />
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, delay: 0.8 + i * 0.1 }}
+                  >
+                    <Star className="w-6 h-6 text-yellow-400 fill-current" />
+                  </motion.div>
                 ))}
               </div>
               <span className="text-xl font-bold">4.9 Stars</span>
               <span className="text-lg">• 100+ Reviews</span>
-            </div>
-            <h1 className="text-5xl font-bold mb-6 leading-tight">
+            </motion.div>
+            
+            <motion.h1 
+              className="text-5xl font-bold mb-6 leading-tight"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.0 }}
+            >
               Utah County's #1 Rated<br />
               <span className="text-red-400">Roofing Experts</span>
-            </h1>
-            <p className="text-xl mb-8 leading-relaxed">
+            </motion.h1>
+            
+            <motion.p 
+              className="text-xl mb-8 leading-relaxed"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.3 }}
+            >
               Licensed, insured, and trusted by hundreds of homeowners across Utah County. 
               Get your free estimate today and join our family of satisfied customers.
-            </p>
-            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-lg">
-                Get Free Estimate Today
-              </Button>
-              <a href="tel:8018304557">
-                <Button size="lg" className="bg-white text-red-600 hover:bg-gray-100 border-2 border-white px-8 py-4 text-lg font-semibold">
-                  Call (801) 830-4557
+            </motion.p>
+            
+            <motion.div 
+              className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.6 }}
+            >
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-lg">
+                  Get Free Estimate Today
                 </Button>
-              </a>
-            </div>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <a href="tel:8018304557">
+                  <Button size="lg" className="bg-white text-red-600 hover:bg-gray-100 border-2 border-white px-8 py-4 text-lg font-semibold">
+                    Call (801) 830-4557
+                  </Button>
+                </a>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Trust Indicators */}
-      <section className="py-12 bg-gray-50">
+      {/* Animated Trust Indicators */}
+      <motion.section 
+        className="py-12 bg-gray-50"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={staggerContainer}
+      >
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div className="flex flex-col items-center">
-              <CounterAnimation end={100} suffix="+" className="text-3xl font-bold text-red-600 mb-2" />
-              <p className="text-gray-600">Happy Customers</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <CounterAnimation end={15} suffix="+" className="text-3xl font-bold text-red-600 mb-2" />
-              <p className="text-gray-600">Years Experience</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold text-red-600 mb-2">4.9</div>
-              <p className="text-gray-600">Google Rating</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold text-red-600 mb-2">24/7</div>
-              <p className="text-gray-600">Emergency Service</p>
-            </div>
+            {[
+              { end: 100, suffix: "+", label: "Happy Customers" },
+              { end: 15, suffix: "+", label: "Years Experience" },
+              { end: 4.9, suffix: "", label: "Google Rating" },
+              { end: 24, suffix: "/7", label: "Emergency Service" }
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                className="flex flex-col items-center"
+                variants={fadeUpVariants}
+              >
+                <CounterAnimation end={stat.end} suffix={stat.suffix} className="text-3xl font-bold text-red-600 mb-2" />
+                <p className="text-gray-600">{stat.label}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Enhanced Services Section */}
+      {/* Enhanced Animated Services Section */}
       <section className="py-20 bg-gradient-to-b from-white to-gray-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-red-600 rounded-full mb-6">
+          <motion.div 
+            className="text-center mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUpVariants}
+          >
+            <motion.div 
+              className="inline-flex items-center justify-center w-16 h-16 bg-red-600 rounded-full mb-6"
+              variants={scaleInVariants}
+            >
               <Shield className="w-8 h-8 text-white" />
-            </div>
+            </motion.div>
             <h2 className="text-5xl font-bold text-black mb-6">
               Premium Roofing Services
               <span className="block text-2xl text-red-600 font-normal mt-2">
@@ -169,145 +306,226 @@ const Index = () => {
               From emergency repairs to complete roof replacements, we deliver unmatched quality 
               and craftsmanship with every project. Your satisfaction is our guarantee.
             </p>
-          </div>
+          </motion.div>
           
-          <div className="grid md:grid-cols-2 gap-8 mb-16">
+          <motion.div 
+            className="grid md:grid-cols-2 gap-8 mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+          >
             {services.map((service, index) => (
-              <ServiceCard key={index} {...service} />
+              <motion.div key={index} variants={fadeUpVariants}>
+                <ServiceCard {...service} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Service Guarantee Section */}
-          <div className="bg-black text-white rounded-2xl p-8 md:p-12 text-center">
+          <motion.div 
+            className="bg-black text-white rounded-2xl p-8 md:p-12 text-center"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUpVariants}
+          >
             <div className="max-w-4xl mx-auto">
               <h3 className="text-3xl font-bold mb-6">
                 The A-Star Guarantee
               </h3>
-              <div className="grid md:grid-cols-3 gap-8">
-                <div className="flex flex-col items-center">
-                  <Award className="w-12 h-12 text-red-400 mb-4" />
-                  <h4 className="text-xl font-bold mb-2">Quality Materials</h4>
-                  <p className="text-gray-300">Only premium materials from trusted manufacturers</p>
-                </div>
-                <div className="flex flex-col items-center">
-                  <Clock className="w-12 h-12 text-red-400 mb-4" />
-                  <h4 className="text-xl font-bold mb-2">On-Time Completion</h4>
-                  <p className="text-gray-300">Projects completed on schedule, every time</p>
-                </div>
-                <div className="flex flex-col items-center">
-                  <Shield className="w-12 h-12 text-red-400 mb-4" />
-                  <h4 className="text-xl font-bold mb-2">25-Year Warranty</h4>
-                  <p className="text-gray-300">Comprehensive warranty on all workmanship</p>
-                </div>
-              </div>
-              <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-lg mt-8">
-                Get Your Free Estimate
-              </Button>
+              <motion.div 
+                className="grid md:grid-cols-3 gap-8"
+                variants={staggerContainer}
+              >
+                {[
+                  { icon: Award, title: "Quality Materials", desc: "Only premium materials from trusted manufacturers" },
+                  { icon: Clock, title: "On-Time Completion", desc: "Projects completed on schedule, every time" },
+                  { icon: Shield, title: "25-Year Warranty", desc: "Comprehensive warranty on all workmanship" }
+                ].map((item, index) => (
+                  <motion.div 
+                    key={index}
+                    className="flex flex-col items-center"
+                    variants={fadeUpVariants}
+                  >
+                    <item.icon className="w-12 h-12 text-red-400 mb-4" />
+                    <h4 className="text-xl font-bold mb-2">{item.title}</h4>
+                    <p className="text-gray-300">{item.desc}</p>
+                  </motion.div>
+                ))}
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-lg mt-8">
+                  Get Your Free Estimate
+                </Button>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Why Choose A-Star Section */}
-      <section className="py-20 bg-black text-white">
+      {/* Animated Why Choose A-Star Section */}
+      <motion.section 
+        className="py-20 bg-black text-white"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={fadeInVariants}
+      >
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <motion.div 
+            className="text-center mb-16"
+            variants={fadeUpVariants}
+          >
             <h2 className="text-4xl font-bold mb-4">Why Choose A-Star Roofing?</h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               Utah County's most trusted roofing contractor with unmatched quality and service
             </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <Shield className="w-12 h-12 text-red-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold mb-2">Licensed & Insured</h3>
-              <p className="text-gray-300">Fully licensed and insured for your protection</p>
-            </div>
-            <div className="text-center">
-              <MapPin className="w-12 h-12 text-red-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold mb-2">Local Experts</h3>
-              <p className="text-gray-300">Utah County roofing specialists since 2009</p>
-            </div>
-            <div className="text-center">
-              <Clock className="w-12 h-12 text-red-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold mb-2">24/7 Emergency</h3>
-              <p className="text-gray-300">Emergency repairs available around the clock</p>
-            </div>
-            <div className="text-center">
-              <Award className="w-12 h-12 text-red-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold mb-2">Quality Guarantee</h3>
-              <p className="text-gray-300">100% satisfaction guaranteed on all work</p>
-            </div>
-          </div>
+          </motion.div>
+          <motion.div 
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+            variants={staggerContainer}
+          >
+            {[
+              { icon: Shield, title: "Licensed & Insured", desc: "Fully licensed and insured for your protection" },
+              { icon: MapPin, title: "Local Experts", desc: "Utah County roofing specialists since 2009" },
+              { icon: Clock, title: "24/7 Emergency", desc: "Emergency repairs available around the clock" },
+              { icon: Award, title: "Quality Guarantee", desc: "100% satisfaction guaranteed on all work" }
+            ].map((item, index) => (
+              <motion.div 
+                key={index}
+                className="text-center"
+                variants={fadeUpVariants}
+                whileHover={{ y: -10 }}
+              >
+                <item.icon className="w-12 h-12 text-red-400 mx-auto mb-4" />
+                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                <p className="text-gray-300">{item.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Project Gallery Section */}
-      <section className="py-20">
+      {/* Animated Project Gallery Section */}
+      <motion.section 
+        className="py-20"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={fadeInVariants}
+      >
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <motion.div 
+            className="text-center mb-16"
+            variants={fadeUpVariants}
+          >
             <h2 className="text-4xl font-bold text-black mb-4">Recent Projects</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               See the quality craftsmanship that has earned us 100+ five-star reviews
             </p>
-          </div>
+          </motion.div>
           <ProjectGallery />
         </div>
-      </section>
+      </motion.section>
 
-      {/* Testimonials Section */}
-      <section className="py-20 bg-gray-50">
+      {/* Animated Testimonials Section */}
+      <motion.section 
+        className="py-20 bg-gray-50"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={fadeInVariants}
+      >
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <motion.div 
+            className="text-center mb-16"
+            variants={fadeUpVariants}
+          >
             <h2 className="text-4xl font-bold text-black mb-4">What Our Customers Say</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Read reviews from satisfied customers across Utah County
             </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
+          </motion.div>
+          <motion.div 
+            className="grid md:grid-cols-3 gap-8"
+            variants={staggerContainer}
+          >
             {testimonials.map((testimonial, index) => (
-              <TestimonialCard key={index} {...testimonial} />
+              <motion.div
+                key={index}
+                variants={fadeUpVariants}
+                whileHover={{ y: -5, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }}
+              >
+                <TestimonialCard {...testimonial} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Contact Section */}
-      <section className="py-20 bg-red-600 text-white">
+      {/* Animated Contact Section */}
+      <motion.section 
+        className="py-20 bg-red-600 text-white"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={fadeInVariants}
+      >
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
+            <motion.div variants={slideInLeft}>
               <h2 className="text-4xl font-bold mb-6">Ready to Get Started?</h2>
               <p className="text-xl mb-8 text-red-100">
                 Get your free estimate today and join hundreds of satisfied customers across Utah County.
               </p>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <Phone className="w-6 h-6 text-red-200" />
-                  <span className="text-lg">(801) 830-4557</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Mail className="w-6 h-6 text-red-200" />
-                  <span className="text-lg">info@astarroofing.com</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <MapPin className="w-6 h-6 text-red-200" />
-                  <span className="text-lg">Serving all of Utah County</span>
-                </div>
-              </div>
-            </div>
-            <div>
+              <motion.div 
+                className="space-y-4"
+                variants={staggerContainer}
+              >
+                {[
+                  { icon: Phone, text: "(801) 830-4557" },
+                  { icon: Mail, text: "info@astarroofing.com" },
+                  { icon: MapPin, text: "Serving all of Utah County" }
+                ].map((item, index) => (
+                  <motion.div 
+                    key={index}
+                    className="flex items-center space-x-3"
+                    variants={fadeUpVariants}
+                  >
+                    <item.icon className="w-6 h-6 text-red-200" />
+                    <span className="text-lg">{item.text}</span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
+            <motion.div variants={slideInRight}>
               <ContactForm />
-            </div>
+            </motion.div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Footer */}
-      <footer className="bg-black text-white py-12">
+      {/* Animated Footer */}
+      <motion.footer 
+        className="bg-black text-white py-12"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={fadeInVariants}
+      >
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div>
+          <motion.div 
+            className="grid md:grid-cols-3 gap-8"
+            variants={staggerContainer}
+          >
+            <motion.div variants={fadeUpVariants}>
               <div className="flex items-center space-x-2 mb-4">
                 <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center">
                   <Star className="w-5 h-5 text-white fill-current" />
@@ -317,8 +535,8 @@ const Index = () => {
               <p className="text-gray-400">
                 Utah County's premier roofing contractor with 100+ five-star reviews and 15+ years of experience.
               </p>
-            </div>
-            <div>
+            </motion.div>
+            <motion.div variants={fadeUpVariants}>
               <h3 className="font-bold text-lg mb-4">Services</h3>
               <ul className="space-y-2 text-gray-400">
                 <li>Residential Roofing</li>
@@ -327,8 +545,8 @@ const Index = () => {
                 <li>Insurance Claims</li>
                 <li>Roof Inspections</li>
               </ul>
-            </div>
-            <div>
+            </motion.div>
+            <motion.div variants={fadeUpVariants}>
               <h3 className="font-bold text-lg mb-4">Contact Info</h3>
               <div className="space-y-2 text-gray-400">
                 <p>Phone: (801) 830-4557</p>
@@ -336,13 +554,16 @@ const Index = () => {
                 <p>Serving Utah County</p>
                 <p>Licensed & Insured</p>
               </div>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+            </motion.div>
+          </motion.div>
+          <motion.div 
+            className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400"
+            variants={fadeUpVariants}
+          >
             <p>&copy; 2024 A-Star Roofing & Construction. All rights reserved.</p>
-          </div>
+          </motion.div>
         </div>
-      </footer>
+      </motion.footer>
     </div>
   );
 };
